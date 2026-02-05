@@ -1,0 +1,70 @@
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
+
+Copyright (C) 2026 ktroid Contributors
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+---
+
+KTROID - Command Line Interface for Native Android Development
+
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+
+What this means:
+
+1. YOU CAN:
+   - Use ktroid for commercial or non-commercial projects
+   - Modify the source code
+   - Distribute the original or modified versions
+   - Use it privately
+
+2. YOU MUST:
+   - Disclose the source code when you distribute ktroid
+   - License your modifications under GPL-3.0 as well
+   - Include a copy of this license in your distribution
+   - State significant changes made to the code
+
+3. YOU CANNOT:
+   - Hold the authors liable for damages
+   - Use ktroid without providing the source code if you distribute it
+   - Sublicense ktroid under a different license
+
+COPYLEFT PROTECTION:
+Any derivative work, modification, or project that includes ktroid
+or significant portions of its code MUST also be released under GPL-3.0
+and make its source code publicly available.
+
+This ensures that ktroid and all its derivatives remain free and open
+source software forever.
+
+For the full license text, visit: https://www.gnu.org/licenses/gpl-3.0.html
+
+---
+
+THIRD-PARTY COMPONENTS:
+ktroid uses the following components:
+
+- Python 3 (Python Software Foundation License)
+- Android SDK Tools (Android Software Development Kit License)
+- Gradle (Apache License 2.0)
+- Kotlin (Apache License 2.0)
+
+These components retain their original licenses.
+
+---
+
+CONTACT:
+For questions about licensing, contact: [your-email@example.com]
+Project Repository: https://github.com/yourusername/ktroid
