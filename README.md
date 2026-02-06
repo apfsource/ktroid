@@ -13,8 +13,11 @@ A reproducible and scriptable Android workflow — without opening an IDE.
 ## ktroid provides:
 
 • create and run apps from a single command
+
 • deploy directly to connected devices
+
 • manage dependencies & permissions without editing files
+
 • predictable builds suitable for CI and scripting
 
 
