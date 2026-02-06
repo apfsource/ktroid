@@ -1,6 +1,7 @@
 # ktroid ⚡
 
 Build, run and test native Android apps entirely from the terminal.
+
 A reproducible and scriptable Android workflow — without opening an IDE.
 
 ![Python](https://img.shields.io/badge/python-3.6+-blue.svg)
