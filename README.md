@@ -1,10 +1,21 @@
 # ktroid ⚡
 
-A fast, lightweight command-line tool for building Android apps with Kotlin and Gradle. Built for developers who prefer working in the terminal.
+Build, run and test native Android apps entirely from the terminal.
+A reproducible and scriptable Android workflow — without opening an IDE.
 
 ![Python](https://img.shields.io/badge/python-3.6+-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
+![License](https://img.shields.io/badge/license-GPL--3.0-green.svg)
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey.svg)
+
+---
+
+## ktroid provides:
+
+• create and run apps from a single command
+• deploy directly to connected devices
+• manage dependencies & permissions without editing files
+• predictable builds suitable for CI and scripting
+
 
 ---
 
@@ -12,13 +23,20 @@ A fast, lightweight command-line tool for building Android apps with Kotlin and 
 
 ktroid is a Python-based CLI that handles the entire Android development workflow from your terminal. Instead of waiting for Android Studio to load, you can build, test, and deploy apps with simple commands.
 
-I built this because I got tired of:
+Created to remove IDE startup overhead, enable remote development and make Android builds scriptable.:
 - Waiting 30+ seconds for Android Studio to start
 - My laptop fan going crazy every time I opened a project
 - Clicking through menus just to add a dependency
 - Not being able to work on remote servers without X11 forwarding
 
 ktroid works great alongside Android Studio - use AS when you need the visual designer or debugger, and ktroid when you just want to build and test quickly.
+
+---
+
+## Philosophy
+
+ktroid does not replace Gradle or Android tooling.
+It exposes them in a deterministic CLI workflow so Android development can be scripted, automated and run in low-resource environments.
 
 ---
 
@@ -33,7 +51,7 @@ ktroid works great alongside Android Studio - use AS when you need the visual de
 - Have limited RAM or want to save battery life
 - Learn better by seeing actual Gradle commands instead of IDE abstractions
 
-**You might not need ktroid if you:**
+**ktroid focuses on iteration speed, not visual UI tooling. You probably don’t need it if you:**
 - Primarily use Android Studio's visual layout editor
 - Rarely build more than once or twice a day
 - Don't mind IDE startup times
@@ -829,7 +847,7 @@ A: Python is available everywhere, easy to read, and perfect for scripting. No c
 A: No. Zero telemetry, zero analytics. Everything runs locally.
 
 **Q: Can I use ktroid in a company/commercial project?**
-A: Yes, it's MIT licensed. Use it however you want.
+A: Yes, it's GPL-3.0 licensed. You can use it freely. If you modify and distribute ktroid itself, those modifications must also be open-sourced under GPL-3.0. But using ktroid to build your proprietary apps is totally fine.
 
 ---
 
@@ -871,9 +889,15 @@ A: Yes, it's MIT licensed. Use it however you want.
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+GPL-3.0 License - see [LICENSE](LICENSE) file for details.
 
-TL;DR: Use it for whatever you want, commercial or personal. Just don't blame me if something breaks.
+This means:
+- ✅ You can use it freely for personal or commercial projects
+- ✅ You can modify and distribute it
+- ⚠️ If you distribute modified versions, you must also open-source them under GPL-3.0
+- ⚠️ You must include the original license and copyright notice
+
+**TL;DR:** Free to use and modify, but keep it open source if you share your changes.
 
 ---
 
@@ -890,15 +914,9 @@ Thanks to:
 
 ## Final Thoughts
 
-Android Studio is an amazing IDE. But sometimes you just want to build your app quickly without waiting for a 2GB program to start up.
+ktroid isn’t a replacement for Android Studio.
+It’s a complementary workflow for developers who prefer terminal-driven iteration.
 
-ktroid gives you that option. It's not trying to replace Android Studio - it's just another tool in your toolkit.
-
-If you're the kind of developer who likes working in the terminal, automating repetitive tasks, and understanding what's happening under the hood, give ktroid a try.
-
-And if you have any questions or run into issues, open an issue on GitHub. I'll do my best to help.
-
-Happy coding! ⚡
 
 ---
 
