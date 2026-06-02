@@ -6,7 +6,8 @@ from ktroid.commands.project import create, init, info
 from ktroid.commands.build import build, clean, signing, run, test
 from ktroid.commands.device import logs, emulator, install, uninstall
 from ktroid.commands.packages import dep, dep_list, dep_remove, perm, perm_remove, logo, bump
-from ktroid.commands.setup import setup, config, check
+from ktroid.commands.setup import setup, config, check, update_config
+from ktroid import __version__
 
 console = Console()
 
@@ -56,6 +57,28 @@ app.command(name="bump", rich_help_panel="🧩 Package Commands")(bump)
 app.command(name="setup", rich_help_panel="⚙️ Setup Commands")(setup)
 app.command(name="config", rich_help_panel="⚙️ Setup Commands")(config)
 app.command(name="check", rich_help_panel="⚙️ Setup Commands")(check)
+app.command(name="update-config", rich_help_panel="⚙️ Setup Commands")(update_config)
+
+@app.command(name="version", rich_help_panel="⚙️ Setup Commands")
+def show_version():
+    """Show the application's version."""
+    console.print(f"[bold cyan]ktroid[/bold cyan] (ktd) version [bold green]{__version__}[/bold green]")
+
+def version_callback(value: bool):
+    if value:
+        console.print(f"[bold cyan]ktroid[/bold cyan] (ktd) version [bold green]{__version__}[/bold green]")
+        raise typer.Exit()
+
+@app.callback()
+def main_callback(
+    version: bool = typer.Option(
+        None, "--version", "-v", 
+        callback=version_callback, 
+        is_eager=True, 
+        help="Show the version and exit."
+    )
+):
+    pass
 
 def main():
     app()

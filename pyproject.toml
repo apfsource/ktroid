@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ktroid"
-version = "2.0.0"
+version = "2.1.0"
 description = "Build, run and test native Android apps entirely from the terminal."
 readme = "README.md"
 authors = [

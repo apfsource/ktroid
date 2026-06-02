@@ -93,217 +93,364 @@ import time # Need time for progress bar
 
 
 
-def setup():
-    """Setup Android Environment."""
-    print_info("=== ktroid Setup Wizard ===")
-    
-    # 1. Define Dependencies
-    print_info("\nRequired Dependencies:")
-    print("1. Java JDK 17+ (Required to run Gradle/Android tools)")
-    print("2. Gradle (Build Tool)")
-    print("3. Android Command Line Tools (sdkmanager, apksigner, etc.)")
-    print("----------------------------------------------------------")
 
-    dest_root = os.path.expanduser("~/android")
+from rich.progress import Progress, SpinnerColumn, DownloadColumn, TextColumn, BarColumn, TimeRemainingColumn
+import urllib.request
+import zipfile
+import stat
+import platform
+import subprocess
+
+def setup():
+    """Master Setup Wizard for Android Environment."""
+    from rich.prompt import Prompt, Confirm
     
-    # --- Helper Functions ---
-    def install_component(name, url, dest_folder, verify_func):
-        # 1. Check
-        sys.stdout.write(f"Checking {name}...")
-        sys.stdout.flush()
-        
-        if verify_func(silent=True):
-             sys.stdout.write(f"\r[{name}] Status: INSTALLED [ OK ]       \n")
-             return True
-        
-        sys.stdout.write(f"\r[{name}] Status: MISSING                  \n")
-             
-        # 2. Prompt
-        print_info(f"-> {name} is required.")
-        print(f"   Download URL: {url}")
-        print(f"   Target: {dest_folder}")
-        
-        confirm = input(f"   Download and install {name}? (y/n): ")
-        if confirm.lower() != 'y':
-            print_warning(f"   Skipping {name}.")
-            return False
-            
-        # 3. Setup Dir
-        os.makedirs(dest_root, exist_ok=True)
-            
-        # 4. Download
-        filename = url.split("/")[-1]
+    print_info("=== ktd Master Setup Wizard ===")
+    
+    # --- 1. JDK Check & Advice ---
+    print_info("\n[1/4] Checking Java Development Kit (JDK)...")
+    import shutil
+    if shutil.which("java"):
+        try:
+            result = subprocess.run(['java', '-version'], capture_output=True, text=True)
+            print_success(f"[OK] Java is installed: {result.stderr.splitlines()[0]}")
+        except:
+            print_success("[OK] Java is installed.")
+    else:
+        print_error("[MISSING] Java JDK was not found on your system.")
+        print_warning("Java is a system-level dependency required by Gradle and Android SDK.")
+        print_info("Please install it manually based on your OS:")
+        print(" - Linux:   sudo apt install openjdk-17-jdk")
+        print(" - Mac:     brew install openjdk@17")
+        print(" - Windows: Download from https://adoptium.net/temurin/releases/")
+        if not Confirm.ask("Do you want to continue setup without Java for now?", default=False):
+            return
+
+    # --- 2. Custom Path Selection ---
+    print_info("\n[2/4] Setup Location")
+    default_dest = os.path.expanduser("~/android") if os.name != 'nt' else "C:\\Android"
+    dest_root = Prompt.ask("Enter installation path", default=default_dest)
+    dest_root = os.path.expanduser(dest_root)
+    os.makedirs(dest_root, exist_ok=True)
+    print_success(f"Using directory: {dest_root}")
+
+    # --- 3. Downloads (Gradle & Cmdline Tools) ---
+    print_info("\n[3/4] Downloading Core Tools")
+    
+    gradle_version = CONFIG.get("gradle_version", "9.3.1")
+    gradle_url = f"https://services.gradle.org/distributions/gradle-{gradle_version}-bin.zip"
+    
+    os_name = platform.system().lower()
+    if 'linux' in os_name:
+        cmd_tools_url = "https://dl.google.com/android/repository/commandlinetools-linux-14742923_latest.zip"
+    elif 'darwin' in os_name:
+        cmd_tools_url = "https://dl.google.com/android/repository/commandlinetools-mac-14742923_latest.zip"
+    else:
+        cmd_tools_url = "https://dl.google.com/android/repository/commandlinetools-win-14742923_latest.zip"
+
+    def download_and_extract(url, name, dest_extract):
+        filename = url.split('/')[-1]
         filepath = os.path.join(dest_root, filename)
         
         if not os.path.exists(filepath):
-            print(f"   Downloading {filename}...")
             try:
-                urllib.request.urlretrieve(url, filepath, download_progress_hook)
-                print() # Newline after progress
+                with Progress(
+                    SpinnerColumn(),
+                    TextColumn(f"[bold blue]Downloading {name}..."),
+                    BarColumn(),
+                    DownloadColumn(),
+                    TimeRemainingColumn(),
+                ) as progress:
+                    task = progress.add_task("Download", total=None)
+                    
+                    def report_hook(count, block_size, total_size):
+                        if progress.tasks[task].total is None:
+                            progress.update(task, total=total_size)
+                        progress.update(task, completed=count * block_size)
+                        
+                    urllib.request.urlretrieve(url, filepath, reporthook=report_hook)
+                print_success(f"Successfully downloaded {name}")
             except Exception as e:
-                print_error(f"\n   Download failed: {e}")
+                print_error(f"Failed to download {name}: {e}")
                 return False
-        
-        print(f"   Extracting {filename}...")
+        else:
+            print_success(f"File {filename} already exists, skipping download.")
+
+        print_info(f"Extracting {name}...")
         try:
-             with zipfile.ZipFile(filepath, 'r') as zip_ref:
-                zip_ref.extractall(dest_folder)
-             print_success("   Extraction complete. [ OK ]")
-        except Exception as e:
-             print_error(f"   Extraction failed: {e}")
-             return False
-             
-        return True
-
-    # --- 0. Java Check (Prerequisite) ---
-    sys.stdout.write("Checking Java JDK...")
-    sys.stdout.flush()
-    if shutil.which("java"):
-        sys.stdout.write("\r[Java JDK] Status: INSTALLED [ OK ]          \n")
-    else:
-        sys.stdout.write("\r[Java JDK] Status: MISSING (Please install JDK 17 manualy) \n")
-        print_warning("   Warning: Java is required for Gradle and Android Tools.")
-
-    # --- 1. Gradle Setup ---
-    def verify_gradle(silent=False):
-        # 1. Check System PATH
-        if shutil.which("gradle"):
+            with zipfile.ZipFile(filepath, 'r') as zip_ref:
+                zip_ref.extractall(dest_extract)
+            print_success(f"Extracted {name}")
             return True
+        except Exception as e:
+            print_error(f"Failed to extract {name}: {e}")
+            return False
 
-        # 2. Check ~/android
-        if os.path.exists(dest_root):
-            g_dirs = [d for d in os.listdir(dest_root) if d.startswith("gradle-") and os.path.isdir(os.path.join(dest_root, d))]
-            if g_dirs:
-                # We found a folder, assume it matches if it has bin/gradle
-                latest_gradle = sorted(g_dirs)[-1]
-                gradle_bin = os.path.join(dest_root, latest_gradle, "bin", "gradle")
-                if os.path.exists(gradle_bin):
-                    return True
-        return False
-
-    if install_component("Gradle", GRADLE_DIST_URL, dest_root, verify_gradle):
-         # Post-install verify
-         if not verify_gradle(silent=True) and not shutil.which("gradle"):
-             # It might be installed but not in PATH for this session
-             pass
-
-    # --- 2. CommandLine Tools Setup ---
-    def verify_cmdline(silent=False):
-        # 1. Check System PATH
-        if shutil.which("sdkmanager"):
-             return True
-
-        # 2. Check ~/android
-        sdkmanager = os.path.join(dest_root, "cmdline-tools", "latest", "bin", "sdkmanager")
-        if os.path.exists(sdkmanager): return True
-        return False
-
-    if install_component("Android SDK Tools", CMD_TOOLS_URL, dest_root, verify_cmdline):
-         # Fix folder structure logic
-         base_cmd = os.path.join(dest_root, "cmdline-tools")
-         original_bin = os.path.join(base_cmd, "bin") # Extracted as cmdline-tools/bin
-         
-         if os.path.exists(original_bin):
-              print_info("   Structuring SDK correctly (cmdline-tools/latest)...")
-              latest_dir = os.path.join(base_cmd, "latest")
-              temp_dir = os.path.join(base_cmd, "temp_move")
-              
-              if not os.path.exists(latest_dir):
-                  os.rename(base_cmd, temp_dir)
-                  os.makedirs(base_cmd)
-                  os.rename(temp_dir, latest_dir)
-                  print_success("   Structure fixed. [ OK ]")
-
-    # --- Final Path Exports ---
-    print("\n------------------------------------------------")
-    print_info("Setup Summary & Exports")
-    print("------------------------------------------------")
-    
-    bashrc_content = []
-    
-    # Check what we have found/installed to print exports
-    # 1. Android Home
-    if os.path.exists(dest_root):
-         print(f"export ANDROID_HOME=\"{dest_root}\"")
-         bashrc_content.append(f'export ANDROID_HOME="{dest_root}"')
-    
-    # 2. Cmdline Tools
-    cmd_bin = os.path.join(dest_root, "cmdline-tools", "latest", "bin")
-    if os.path.exists(cmd_bin):
-         print(f"export PATH=\"$PATH:{cmd_bin}\"")
-         bashrc_content.append(f'export PATH="$PATH:{cmd_bin}"')
-    
-    # 3. Platform Tools
-    plat_bin = os.path.join(dest_root, "platform-tools")
-    if os.path.exists(plat_bin):
-         print(f"export PATH=\"$PATH:{plat_bin}\"")
-         bashrc_content.append(f'export PATH="$PATH:{plat_bin}"')
-
-    # 4. Gradle
-    g_dirs = []
-    if os.path.exists(dest_root):
-        g_dirs = [d for d in os.listdir(dest_root) if d.startswith("gradle-")]
+    # Download Gradle
+    if Confirm.ask(f"Download and setup Gradle {gradle_version}?", default=True):
+        download_and_extract(gradle_url, "Gradle", dest_root)
         
-    if g_dirs:
-         g_bin = os.path.join(dest_root, sorted(g_dirs)[-1], "bin")
-         print(f"export PATH=\"$PATH:{g_bin}\"")
-         bashrc_content.append(f'export PATH="$PATH:{g_bin}"')
-    
-    print("\nTo make these permanent, add them to ~/.bashrc")
-
-# --- Advanced Features: Dictionaries ---
-COMMON_DEPS = {
-    "retrofit": "com.squareup.retrofit2:retrofit:2.9.0",
-    "gson": "com.google.code.gson:gson:2.10.1",
-    "glide": "com.github.bumptech.glide:glide:4.16.0",
-    "coil": "io.coil-kt:coil-compose:2.5.0",
-    "navigation": "androidx.navigation:navigation-compose:2.7.5",
-    "lifecycle": "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2",
-    "coroutines": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3",
-    "okhttp": "com.squareup.okhttp3:okhttp:4.12.0",
-    "material": "com.google.android.material:material:1.11.0",
-    "room": "androidx.room:room-runtime:2.6.1"
-}
-
-COMMON_PERMS = {
-    "internet": "android.permission.INTERNET",
-    "camera": "android.permission.CAMERA",
-    "storage": "android.permission.WRITE_EXTERNAL_STORAGE",
-    "read_storage": "android.permission.READ_EXTERNAL_STORAGE",
-    "location": "android.permission.ACCESS_FINE_LOCATION",
-    "background_location": "android.permission.ACCESS_BACKGROUND_LOCATION",
-    "network_state": "android.permission.ACCESS_NETWORK_STATE",
-    "wifi_state": "android.permission.ACCESS_WIFI_STATE",
-    "bluetooth": "android.permission.BLUETOOTH",
-    "record_audio": "android.permission.RECORD_AUDIO"
-}
-
-
-
-def config(init: bool = typer.Option(False, "--init", help="Reset config to defaults")):
-    """Manage configuration"""
-    config_dir = get_config_dir()
-    config_path = os.path.join(config_dir, "config.json")
-    
-    if not os.path.exists(config_dir):
-        os.makedirs(config_dir)
+    # Download Cmdline tools
+    cmd_tools_extracted = False
+    if Confirm.ask("Download and setup Android Command Line Tools?", default=True):
+        temp_cmd_dir = os.path.join(dest_root, "cmdline-temp")
+        cmd_tools_extracted = download_and_extract(cmd_tools_url, "Android Cmdline Tools", temp_cmd_dir)
         
-    if os.path.exists(config_path) and not init:
-        print_info(f"Configuration file exists at: {config_path}")
-        with open(config_path, 'r') as f:
-            print(f.read())
-        print_info(f"\nEdit this file to update SDK/AGP versions without updating the tool.")
+        # Fix directory structure for sdkmanager
+        if cmd_tools_extracted:
+            final_cmd_dir = os.path.join(dest_root, "cmdline-tools", "latest")
+            os.makedirs(os.path.dirname(final_cmd_dir), exist_ok=True)
+            source_cmd = os.path.join(temp_cmd_dir, "cmdline-tools")
+            if os.path.exists(source_cmd) and not os.path.exists(final_cmd_dir):
+                os.rename(source_cmd, final_cmd_dir)
+            shutil.rmtree(temp_cmd_dir, ignore_errors=True)
+
+    # --- 4. Android SDK Manager Automation ---
+    print_info("\n[4/4] Android SDK Packages")
+    
+    sdkmanager_name = "sdkmanager.bat" if os.name == 'nt' else "sdkmanager"
+    sdkmanager_path = os.path.join(dest_root, "cmdline-tools", "latest", "bin", sdkmanager_name)
+    
+    if os.path.exists(sdkmanager_path):
+        if os.name != 'nt':
+            st = os.stat(sdkmanager_path)
+            os.chmod(sdkmanager_path, st.st_mode | stat.S_IEXEC)
+            
+        print_info("Android SDK Mapping:")
+        print(" 35 = Android 15\n 34 = Android 14\n 33 = Android 13")
+        sdks_input = Prompt.ask("Enter required SDK versions (comma-separated)", default=str(CONFIG.get("compile_sdk", "35")))
+        sdks = [s.strip() for s in sdks_input.split(',')]
+        
+        packages_to_install = ["platform-tools"]
+        for sdk in sdks:
+            packages_to_install.append(f"platforms;android-{sdk}")
+            packages_to_install.append(f"build-tools;{sdk}.0.0")
+            
+        print_info(f"The following packages will be installed: {', '.join(packages_to_install)}")
+        if Confirm.ask("Do you want to install them now using sdkmanager?", default=True):
+            print_info("Accepting licenses and downloading packages... This may take a while.")
+            try:
+                yes_cmd = "echo y" if os.name == 'nt' else "yes"
+                license_cmd = f"{yes_cmd} | \"{sdkmanager_path}\" --licenses"
+                subprocess.run(license_cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                
+                install_cmd = [sdkmanager_path] + packages_to_install
+                subprocess.run(install_cmd, check=True)
+                print_success("Android SDK packages installed successfully!")
+            except Exception as e:
+                print_error(f"Failed to install SDK packages: {e}")
     else:
-        if os.path.exists(config_path):
-             print_warning("Overwriting existing configuration...")
-        
-        import json
-        with open(config_path, 'w') as f:
-            json.dump(DEFAULT_CONFIG, f, indent=4)
-        print_success(f"Configuration file created at: {config_path}")
+        print_warning("sdkmanager not found. Skipping SDK package installation.")
 
-
+    # --- 5. Export Variables ---
+    print_info("\n=== Setup Summary & Environment Variables ===")
+    
+    bashrc_path = os.path.expanduser("~/.bashrc")
+    zshrc_path = os.path.expanduser("~/.zshrc")
+    
+    g_dirs = [d for d in os.listdir(dest_root) if d.startswith("gradle-")] if os.path.exists(dest_root) else []
+    
+    if os.name != 'nt':
+        exports = [
+            f'export ANDROID_HOME="{dest_root}"',
+            f'export PATH="$PATH:{os.path.join(dest_root, "cmdline-tools", "latest", "bin")}"',
+            f'export PATH="$PATH:{os.path.join(dest_root, "platform-tools")}"'
+        ]
+        if g_dirs:
+            g_bin = os.path.join(dest_root, sorted(g_dirs)[-1], "bin")
+            exports.append(f'export PATH="$PATH:{g_bin}"')
+            
+        print_info("The following paths need to be added to your system:")
+        for exp in exports:
+            print(f"  [cyan]{exp}[/cyan]")
+            
+        print_warning("\nYou can add these manually, or I can do it for you.")
+        if Confirm.ask("Do you want me to automatically append these to your ~/.bashrc (or ~/.zshrc)?", default=True):
+            target_rc = zshrc_path if os.path.exists(zshrc_path) else bashrc_path
+            try:
+                with open(target_rc, "a") as f:
+                    f.write("\n# Added by ktd setup\n")
+                    for exp in exports:
+                        f.write(exp + "\n")
+                print_success(f"Added to {target_rc}. Please run 'source {target_rc}' to apply.")
+            except Exception as e:
+                print_error(f"Failed to write to {target_rc}: {e}")
+        else:
+            print_info("Skipped auto-path setup. Please add them manually.")
+            
+    else:
+        # Windows Path Setup
+        print_info("The following paths need to be added to your Windows Environment Variables:")
+        print(f"  [cyan]ANDROID_HOME = {dest_root}[/cyan]")
+        print(f"  [cyan]PATH += {os.path.join(dest_root, 'cmdline-tools', 'latest', 'bin')}[/cyan]")
+        print(f"  [cyan]PATH += {os.path.join(dest_root, 'platform-tools')}[/cyan]")
+        if g_dirs:
+            print(f"  [cyan]PATH += {os.path.join(dest_root, sorted(g_dirs)[-1], 'bin')}[/cyan]")
+            
+        print_warning("\nYou can add these manually in System Properties, or I can do it for you (Current User only).")
+        if Confirm.ask("Do you want me to automatically add these to your Windows Registry?", default=True):
+            try:
+                import winreg
+                key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment", 0, winreg.KEY_ALL_ACCESS)
+                winreg.SetValueEx(key, "ANDROID_HOME", 0, winreg.REG_SZ, dest_root)
+                
+                try:
+                    path_val, _ = winreg.QueryValueEx(key, "PATH")
+                except FileNotFoundError:
+                    path_val = ""
+                    
+                new_paths = [
+                    os.path.join(dest_root, "cmdline-tools", "latest", "bin"),
+                    os.path.join(dest_root, "platform-tools")
+                ]
+                if g_dirs:
+                    new_paths.append(os.path.join(dest_root, sorted(g_dirs)[-1], "bin"))
+                    
+                for np in new_paths:
+                    if np not in path_val:
+                        path_val = path_val + ";" + np if path_val else np
+                        
+                winreg.SetValueEx(key, "PATH", 0, winreg.REG_EXPAND_SZ, path_val)
+                winreg.CloseKey(key)
+                
+                print_success("Successfully added to Windows Registry!")
+                print_warning("Note: You must completely restart your terminal (or PC) for Windows to load the new PATH.")
+            except ImportError:
+                print_error("winreg module not found. Please add paths manually.")
+            except Exception as e:
+                print_error(f"Failed to add to Windows Registry: {e}. Please add manually or run terminal as Administrator.")
+        else:
+            print_info("Skipped auto-path setup. Please add them manually.")
 
 def check():
     """Check dependencies"""
     check_env()
+
+import urllib.request
+import json
+import re
+from rich.prompt import Prompt
+
+def fetch_latest_gradle():
+    try:
+        req = urllib.request.Request("https://services.gradle.org/versions/all", headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=5) as response:
+            data = json.loads(response.read().decode())
+            stable = [v["version"] for v in data if not v.get("snapshot") and not v.get("rc") and not v.get("milestone") and not v.get("nightly")]
+            return stable[0], stable[1:6]
+    except:
+        return None, []
+
+def fetch_latest_kotlin():
+    try:
+        req = urllib.request.Request("https://api.github.com/repos/JetBrains/kotlin/releases", headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=5) as response:
+            data = json.loads(response.read().decode())
+            stable = [v["tag_name"].replace("v", "") for v in data if not v.get("prerelease") and "RC" not in v["tag_name"] and "Beta" not in v["tag_name"]]
+            return stable[0], stable[1:6]
+    except:
+        return None, []
+
+def fetch_latest_agp():
+    try:
+        req = urllib.request.Request("https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/maven-metadata.xml", headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=5) as response:
+            xml = response.read().decode()
+            versions = re.findall(r'<version>(.*?)</version>', xml)
+            stable = [v for v in versions if '-' not in v and v.count('.') >= 2]
+            return stable[-1], list(reversed(stable[-6:-1]))
+    except:
+        return None, []
+
+
+def verify_gradle(v):
+    import urllib.request
+    try:
+        req = urllib.request.Request(f"https://services.gradle.org/distributions/gradle-{v}-bin.zip", method="HEAD", headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=5) as r:
+            return r.status == 200
+    except:
+        return False
+
+def verify_kotlin(v):
+    import urllib.request
+    try:
+        req = urllib.request.Request(f"https://api.github.com/repos/JetBrains/kotlin/releases/tags/v{v}", method="HEAD", headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=5) as r:
+            return r.status == 200
+    except:
+        return False
+
+def verify_agp(v):
+    import urllib.request
+    try:
+        url = f"https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/{v}/gradle-{v}.pom"
+        req = urllib.request.Request(url, method="HEAD", headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=5) as r:
+            return r.status == 200
+    except:
+        return False
+
+def update_config():
+    """Interactive Configuration Updater"""
+    from ktroid.core.config import CONFIG, save_config
+    
+    print_info("Fetching latest versions from the internet... Please wait.")
+    
+    latest_gradle, recent_gradle = fetch_latest_gradle()
+    latest_kotlin, recent_kotlin = fetch_latest_kotlin()
+    latest_agp, recent_agp = fetch_latest_agp()
+    
+    updates = {}
+    
+    def prompt_version(key, display_name, latest_ver, recent_vers, verify_func=None):
+        current_ver = CONFIG.get(key)
+        print("\n" + "-"*40)
+        print_info(f"Configuring {display_name}")
+        print(f"Current Default: {current_ver}")
+        if latest_ver:
+            print(f"Latest Stable:   {latest_ver}")
+            print(f"Recent Versions: {', '.join(recent_vers)}")
+        else:
+            print("Latest Stable:   [Failed to fetch]")
+            
+        choices = ["Default", "Latest", "Custom"]
+        choice = Prompt.ask(f"Select option for {display_name}", choices=choices, default="Default")
+        
+        if choice == "Latest" and latest_ver:
+            return latest_ver
+        elif choice == "Custom":
+            while True:
+                custom_ver = Prompt.ask("Enter custom version")
+                if not verify_func:
+                    return custom_ver
+                
+                print(f"Verifying {custom_ver}...")
+                if verify_func(custom_ver):
+                    print_success(f"Version {custom_ver} verified successfully! [OK]")
+                    return custom_ver
+                else:
+                    print_error(f"Version '{custom_ver}' could not be found on official servers. Are you sure it's correct?")
+                    retry = Prompt.ask("Do you want to try another version?", choices=["y", "n"], default="y")
+                    if retry == "n":
+                        print("Falling back to Default.")
+                        return current_ver
+        else:
+            return current_ver
+            
+    updates["gradle_version"] = prompt_version("gradle_version", "Gradle", latest_gradle, recent_gradle, verify_gradle)
+    updates["kotlin_version"] = prompt_version("kotlin_version", "Kotlin", latest_kotlin, recent_kotlin, verify_kotlin)
+    updates["agp_version"] = prompt_version("agp_version", "Android Gradle Plugin (AGP)", latest_agp, recent_agp, verify_agp)
+    
+    # Prompt for other basic configs without latest checks
+    updates["compile_sdk"] = Prompt.ask("\nCompile SDK", default=CONFIG.get("compile_sdk"))
+    updates["min_sdk"] = Prompt.ask("Min SDK", default=CONFIG.get("min_sdk"))
+    updates["target_sdk"] = Prompt.ask("Target SDK", default=CONFIG.get("target_sdk"))
+    updates["java_version"] = Prompt.ask("Java Version", default=CONFIG.get("java_version"))
+    
+    print("\n" + "-"*40)
+    print_info("Saving new configuration...")
+    if save_config(updates):
+        print_success("Configuration updated successfully!")
+    else:
+        print_error("Failed to update configuration.")

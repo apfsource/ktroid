@@ -30,5 +30,18 @@ def load_config():
 
 CONFIG = load_config()
 
+def save_config(new_config):
+    config_path = os.path.join(get_config_dir(), "config.json")
+    try:
+        with open(config_path, 'w') as f:
+            json.dump(new_config, f, indent=4)
+        # Update current runtime config
+        global CONFIG
+        CONFIG.update(new_config)
+        return True
+    except Exception as e:
+        print_warning(f"Failed to save config file: {e}")
+        return False
+
 def get_template_path(filename):
     return os.path.join(get_script_dir(), 'templates', filename)
