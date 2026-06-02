@@ -2,3 +2,8 @@ website/
 venv/
 .venv/
 
+# Python packaging and cache
+__pycache__/
+*.egg-info/
+build/
+dist/

@@ -20,8 +20,6 @@ A reproducible and scriptable Android workflow — without opening an IDE.
 
 • predictable builds suitable for CI and scripting
 
-• **Modern TUI**: Beautiful colors and grouped help menus
-• **ktd alias**: Super short `ktd` command for blazing fast typing
 
 ---
 
@@ -99,21 +97,47 @@ That's it. No project sync, no Gradle daemon warmup, no waiting.
 
 ## Installation
 
-`ktroid` is now a fully modular Python package. You can install it globally using `pip`:
+### Quick Install (Recommended)
 
+**Linux and macOS:**
 ```bash
 git clone https://github.com/apfsource/ktroid.git
 cd ktroid
-pip install -e .
+chmod +x ktroid.py
+sudo ln -s $(pwd)/ktroid.py /usr/local/bin/ktroid
 ```
 
-### The `ktd` Alias (Ktroid Terminal Development)
-To make typing faster, installing the package gives you two commands that do exactly the same thing:
-- `ktroid run`
-- `ktd run` 
+Now `ktroid` works from anywhere:
+```bash
+cd ~/projects/my-app
+ktroid run
+```
 
-`ktd` stands for **Kt**roid **T**erminal **D**evelopment (or **K**otlin **T**o **D**evice). Use whichever you prefer!
+**Don't have sudo access?** Use this instead:
+```bash
+git clone https://github.com/apfsource/ktroid.git
+cd ktroid
+chmod +x ktroid.py
+mkdir -p ~/.local/bin
+ln -s $(pwd)/ktroid.py ~/.local/bin/ktroid
+echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
+source ~/.bashrc
+```
 
+**Windows (PowerShell):**
+```powershell
+git clone https://github.com/apfsource/ktroid.git
+cd ktroid
+
+# Create batch wrapper
+@"
+@echo off
+python "%~dp0ktroid.py" %*
+"@ | Out-File -FilePath ktroid.bat -Encoding ASCII
+
+# Add to PATH manually through System Properties
+# Or use the installer script (coming soon)
+```
 
 ### First-Time Setup
 

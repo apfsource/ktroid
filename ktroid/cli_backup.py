@@ -201,6 +201,7 @@ def generate_project_structure(project_dir, project_name, package_name):
             f.write(content)
 
     render_template('settings.gradle', os.path.join(project_dir, 'settings.gradle'))
+    render_template('ktroid.md', os.path.join(project_dir, 'ktroid.md'))
     render_template('root_build.gradle', os.path.join(project_dir, 'build.gradle'))
     render_template('gitignore', os.path.join(project_dir, '.gitignore'))
     render_template('gradle.properties', os.path.join(project_dir, 'gradle.properties'))
