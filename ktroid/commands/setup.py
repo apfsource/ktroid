@@ -326,6 +326,13 @@ def check():
     """Check dependencies"""
     check_env()
 
+def config():
+    """Show current configuration"""
+    from ktroid.core.utils import print_info
+    import json
+    print_info("Current Configuration:")
+    print(json.dumps(CONFIG, indent=4))
+
 import urllib.request
 import json
 import re
