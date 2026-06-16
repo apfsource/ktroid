@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>\n    <link rel="canonical" href="https://ktd.acharyaml.com/about.html" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - ktroid</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="bg-animation"></div>
+
+    <nav>
+        <div class="container">
+            <div class="logo"><a href="index.html" style="color: inherit;">ktroid_</a></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="docs.html">Documentation</a>
+                <a href="about.html" class="active">About</a>
+                <a href="https://github.com/apfsource/ktroid" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <h1>💡 About ktroid</h1>
+            <p>The story behind the ultimate CLI for Android development</p>
+        </div>
+
+        <div class="page-content">
+            <h2>🎯 Our Mission</h2>
+            <p>To make professional Android development accessible to everyone, regardless of their hardware limitations
+                or software preferences. We believe powerful tools should be simple, fast, and respect user freedom.</p>
+
+            <div class="success-box">
+                <strong>Core Values:</strong><br>
+                ⚡ Speed - Commands execute in milliseconds<br>
+                🎯 Simplicity - One command does one thing well<br>
+                🔓 Freedom - 100% open source, no vendor lock-in<br>
+                💻 Accessibility - Works on 2GB RAM machines<br>
+                🌐 Offline-First - Built for developers with limited internet
+            </div>
+
+            <h2>📖 The Story</h2>
+
+            <h3>The Problem</h3>
+            <p>Android Studio, while powerful, has become increasingly resource-hungry. Many developers face:</p>
+            <ul>
+                <li><strong>Hardware Barriers:</strong> Not everyone has 16GB RAM and latest processors</li>
+                <li><strong>Workflow Disruption:</strong> Vim/Neovim users forced to context-switch to a GUI IDE</li>
+                <li><strong>Slow Iteration:</strong> IDE startup and indexing consume precious development time</li>
+                <li><strong>Connectivity Issues:</strong> Developing in areas with poor or expensive internet</li>
+            </ul>
+
+            <h3>The Solution</h3>
+            <p>ktroid was born from a simple question: <em>"What if we could build Android apps as easily as we build
+                    Node.js apps?"</em></p>
+
+            <p>Just like npm for JavaScript or cargo for Rust, Android development deserves a first-class CLI
+                experience. No bloat, no distractions, just pure productivity.</p>
+
+            <h2>🏗️ Design Philosophy</h2>
+
+            <h3>1. Unix Philosophy</h3>
+            <p>Each command does one thing and does it well. Commands can be chained, automated, and integrated into any
+                workflow.</p>
+
+            <h3>2. Progressive Enhancement</h3>
+            <p>Start simple, grow as needed. Create a project with one command. Add features incrementally. Scale to
+                production when ready.</p>
+
+            <h3>3. Sane Defaults</h3>
+            <p>Works out of the box with best practices built-in. No configuration files to edit, no XML to wrestle, no
+                Gradle scripts to understand.</p>
+
+            <h3>4. Transparency</h3>
+            <p>Every command shows exactly what it's doing. No magic, no hidden processes, no surprise network calls.
+            </p>
+
+            <h3>5. Offline-First</h3>
+            <p>Once set up, ktroid works without internet. Dependencies are cached, builds are local, development is
+                uninterrupted.</p>
+
+            <h2>🛠️ Technical Stack</h2>
+
+            <h3>Core Technology</h3>
+            <ul>
+                <li><strong>Language:</strong> Python 3.8+ (universal, readable, maintainable)</li>
+                <li><strong>Architecture:</strong> Single-file CLI tool (~1500 lines)</li>
+                <li><strong>Dependencies:</strong> Minimal - only Python standard library</li>
+            </ul>
+
+            <h3>Android Ecosystem</h3>
+            <ul>
+                <li><strong>Build System:</strong> Gradle (industry standard)</li>
+                <li><strong>Language:</strong> Kotlin (modern, concise, safe)</li>
+                <li><strong>UI Framework:</strong> Jetpack Compose (declarative, reactive)</li>
+                <li><strong>SDK:</strong> Android SDK Tools (official Google tools)</li>
+            </ul>
+
+            <h3>Why Python?</h3>
+            <p>Python was chosen because:</p>
+            <ul>
+                <li>✅ Pre-installed on most Linux systems</li>
+                <li>✅ Human-readable code (easy to audit and modify)</li>
+                <li>✅ Excellent subprocess and file handling</li>
+                <li>✅ Cross-platform compatibility</li>
+                <li>✅ Low barrier to contribution</li>
+            </ul>
+
+            <h2>🌟 Key Features</h2>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightning Fast</h3>
+                    <p>Commands execute instantly. No IDE startup, no indexing, no waiting.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🪶</div>
+                    <h3>Ultra Lightweight</h3>
+                    <p>Single Python file. Runs on 2GB RAM. Perfect for old laptops or cloud VMs.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Smart Shortcuts</h3>
+                    <p>Add dependencies and permissions without leaving the terminal or googling.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Complete Toolchain</h3>
+                    <p>From project creation to Play Store release, all in one tool.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Emulator Control</h3>
+                    <p>Create, start, and manage Android emulators from the command line.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🧪</div>
+                    <h3>Testing Integration</h3>
+                    <p>Run unit and instrumented tests with a single command.</p>
+                </div>
+            </div>
+
+            <h2>👥 Who We Serve</h2>
+
+            <h3>🎓 Students & Learners</h3>
+            <p>Learning Android development on a budget? ktroid works on entry-level hardware and teaches you the
+                fundamentals without IDE magic hiding the details.</p>
+
+            <h3>💻 Terminal Enthusiasts</h3>
+            <p>Live in vim, tmux, or VS Code? ktroid fits perfectly into your keyboard-driven workflow.</p>
+
+            <h3>🌍 Developers in Emerging Markets</h3>
+            <p>Limited bandwidth or expensive internet? ktroid's offline-first design respects your connectivity
+                constraints.</p>
+
+            <h3>🚀 DevOps & CI/CD Engineers</h3>
+            <p>Automate Android builds in pipelines. No GUI required, perfect for Docker containers and SSH sessions.
+            </p>
+
+            <h3>⚡ Speed-Focused Developers</h3>
+            <p>Value iteration speed over IDE features? ktroid gets out of your way and lets you code.</p>
+
+            <h2>🎨 Design Decisions</h2>
+
+            <h3>Why No GUI?</h3>
+            <p>GUIs are great for discoverability but terrible for automation and speed. CLIs are scriptable,
+                composable, and faster once learned.</p>
+
+            <h3>Why Single File?</h3>
+            <p>Easy to audit, easy to modify, easy to distribute. No complex project structure to navigate.</p>
+
+            <h3>Why GPL v3?</h3>
+            <p>To ensure ktroid and all derivatives remain free and open source forever. Copyleft protects user freedom.
+            </p>
+
+            <h3>Why No Telemetry?</h3>
+            <p>Privacy by design. We don't need your data, and you shouldn't have to trust us with it.</p>
+
+            <h2>📊 Project Stats</h2>
+
+            <div class="comparison-table" style="margin: 2rem 0;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 1rem;"><strong>Lines of Code:</strong></td>
+                        <td style="padding: 1rem;">~1,500 (Python)</td>
+                    </tr>
+                    <tr style="background: rgba(88, 166, 255, 0.05);">
+                        <td style="padding: 1rem;"><strong>Commands:</strong></td>
+                        <td style="padding: 1rem;">24 distinct commands</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem;"><strong>Dependencies:</strong></td>
+                        <td style="padding: 1rem;">Zero external Python packages</td>
+                    </tr>
+                    <tr style="background: rgba(88, 166, 255, 0.05);">
+                        <td style="padding: 1rem;"><strong>File Size:</strong></td>
+                        <td style="padding: 1rem;">~65KB (uncompressed)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem;"><strong>Startup Time:</strong></td>
+                        <td style="padding: 1rem;">
+                            < 100ms (instant)</td>
+                    </tr>
+                    <tr style="background: rgba(88, 166, 255, 0.05);">
+                        <td style="padding: 1rem;"><strong>Memory Usage:</strong></td>
+                        <td style="padding: 1rem;">~20MB (during execution)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h2>🤝 Open Source</h2>
+
+            <p>ktroid is proudly open source under GPL v3:</p>
+            <ul>
+                <li>✅ Free to use forever</li>
+                <li>✅ Free to modify and distribute</li>
+                <li>✅ Community-driven development</li>
+                <li>✅ Transparent and auditable</li>
+                <li>✅ No vendor lock-in</li>
+            </ul>
+
+            <div class="important-box">
+                <strong>🔓 Copyleft Protection:</strong><br>
+                Any modifications or derivative works MUST also be open-sourced under GPL v3.
+                This ensures ktroid and its ecosystem remain free forever.
+            </div>
+
+            <h2>🌱 Future Vision</h2>
+
+            <h3>Planned Features</h3>
+            <ul>
+                <li>🎨 <strong>Code Generation:</strong> Scaffold Activities, Fragments, ViewModels</li>
+                <li>🔍 <strong>Dependency Search:</strong> Search Maven Central from CLI</li>
+                <li>📦 <strong>Plugin System:</strong> Extend ktroid with custom commands</li>
+                <li>🌐 <strong>Multi-Platform:</strong> iOS support (Kotlin Multiplatform)</li>
+                <li>📊 <strong>Analytics:</strong> Local-only build time and size tracking</li>
+                <li>🤖 <strong>AI Integration:</strong> Local LLM for code suggestions</li>
+            </ul>
+
+            <h3>Non-Goals</h3>
+            <p>What ktroid will NEVER be:</p>
+            <ul>
+                <li>❌ A full IDE replacement for visual designers</li>
+                <li>❌ A tool with telemetry or analytics</li>
+                <li>❌ Closed-source or proprietary</li>
+                <li>❌ Resource-heavy or bloated</li>
+                <li>❌ Dependent on cloud services</li>
+            </ul>
+
+            <h2>🙏 Acknowledgments</h2>
+
+            <p>ktroid builds upon the work of giants:</p>
+            <ul>
+                <li><strong>Google:</strong> For the Android platform and SDK tools</li>
+                <li><strong>JetBrains:</strong> For Kotlin language</li>
+                <li><strong>Gradle:</strong> For the build system</li>
+                <li><strong>Python Software Foundation:</strong> For Python</li>
+                <li><strong>Open Source Community:</strong> For inspiration and support</li>
+            </ul>
+
+            <h2>📞 Get Involved</h2>
+
+            <div class="success-box">
+                <strong>Ways to Contribute:</strong><br><br>
+
+                <strong>💻 Code:</strong> Submit PRs for bug fixes or new features<br>
+                <strong>📚 Documentation:</strong> Improve docs or write tutorials<br>
+                <strong>🐛 Bug Reports:</strong> Report issues on GitHub<br>
+                <strong>💡 Ideas:</strong> Suggest features in Discussions<br>
+                <strong>⭐ Star:</strong> Star us on GitHub to show support<br>
+                <strong>📣 Spread the Word:</strong> Tell other developers about ktroid
+            </div>
+
+            <h2>📧 Contact</h2>
+
+            <ul>
+                <li><strong>GitHub:</strong> <a href="https://github.com/apfsource/ktroid"
+                        style="color: var(--accent-color);">github.com/apfsource/ktroid</a></li>
+                <li><strong>Issues:</strong> <a href="https://github.com/apfsource/ktroid/issues"
+                        style="color: var(--accent-color);">Report bugs or request features</a></li>
+                <li><strong>Discussions:</strong> <a href="https://github.com/apfsource/ktroid/discussions"
+                        style="color: var(--accent-color);">Community forum</a></li>
+                <li><strong>Email:</strong> hello@ktroid.dev</li>
+            </ul>
+
+            <hr style="margin: 3rem 0; border-color: var(--border-color);">
+
+            <p style="text-align: center; font-size: 1.2rem; color: var(--text-secondary); font-style: italic;">
+                "Build great apps, not excuses about hardware."
+            </p>
+
+            <p style="text-align: center; margin-top: 2rem;">
+                <strong>Made with ❤️ by developers, for developers.</strong>
+            </p>
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ktroid</h3>
+                <p style="color: var(--text-secondary);">Empowering Developers Worldwide</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="docs.html">Documentation</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="https://github.com/apfsource/ktroid">GitHub</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="license.html">License (GPL v3)</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="disclaimer.html">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 ktroid. Free and Open Source Forever.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

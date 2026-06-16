@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>\n    <link rel="canonical" href="https://ktd.acharyaml.com" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ktroid - Native Android Development CLI</title>
+    <meta name="description" content="ktroid is a minimalistic, offline-first Python CLI tool to build, run, and test native Android apps entirely from the terminal without Android Studio.">
+    <meta name="keywords" content="Android CLI, Native Android Development, ktroid, Terminal Android build, No Android Studio">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ktd.acharyaml.com/">
+    <meta property="og:title" content="ktroid - Native Android Development CLI">
+    <meta property="og:description" content="Build Android apps without distractions. A lightweight alternative to Android Studio for terminal lovers.">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="ktroid - Native Android Development CLI">
+    <meta property="twitter:description" content="Build Android apps without distractions. A lightweight alternative to Android Studio for terminal lovers.">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="bg-animation"></div>
+
+    <nav>
+        <div class="container">
+            <div class="logo"><a href="index.html" style="color: inherit;">ktroid_</a></div>
+            <div class="nav-links">
+                <a href="#philosophy">Philosophy</a>
+                <a href="#comparison">Why Ktroid?</a>
+                <a href="docs.html">Documentation</a>
+                <a href="about.html">About</a>
+                <a href="https://github.com/apfsource/ktroid" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Build Android Apps,<br><span>Not Distractions.</span></h1>
+        <p>The minimalistic, offline-first workflow for developers who prefer terminals over bloated IDEs. Reclaim your
+            RAM.</p>
+        <div style="margin-top: 2rem;">
+            <a href="#comparison" class="cta-button" style="background-color: #30363d; margin-right: 1rem;">Why?</a>
+            <a href="docs.html" class="cta-button">Read the Docs</a>
+        </div>
+
+        <div class="terminal-mockup">
+            <div class="terminal-header">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            <div class="terminal-body">
+                <div><span class="prompt">$</span> ktd init MyApp</div>
+                <div style="color: #2ea043">✓ Project 'MyApp' created successfully.</div>
+                <br>
+                <div><span class="prompt">$</span> ktd dep retrofit</div>
+                <div style="color: #2ea043">✓ Dependency added: com.squareup.retrofit2:retrofit:2.9.0</div>
+                <br>
+                <div><span class="prompt">$</span> ktd emulator start</div>
+                <div>> Starting emulator: Pixel_7</div>
+                <br>
+                <div><span class="prompt">$</span> ktd run</div>
+                <div>> Building Debug APK...</div>
+                <div>> Installing on emulator-5554...</div>
+                <div style="color: #2ea043">✓ App Launched.</div>
+                <br>
+                <div><span class="prompt">$</span> ktd test</div>
+                <div style="color: #2ea043">✓ All tests passed.</div>
+                <br>
+                <div><span class="prompt">$</span> <span class="cursor"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="philosophy" class="features">
+        <div class="section-title">Who is this for?</div>
+        <div class="feature-card">
+            <div class="feature-icon">💻</div>
+            <h3>Low-Spec Hardware</h3>
+            <p>Don't have 16GB RAM? Ktroid runs effortlessly on 4GB machines where Android Studio struggles.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⌨️</div>
+            <h3>Terminal Lovers</h3>
+            <p>You write code in Vim/Neovim/VSCode. You shouldn't have to switch windows just to build and run.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🧘</div>
+            <h3>Minimalists</h3>
+            <p>No complex menus, no indexing for hours. Just you, your code, and the CLI.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🚀</div>
+            <h3>Power Users</h3>
+            <p>Full emulator control, test automation, and version management from the command line.</p>
+        </div>
+    </section>
+
+    <section id="comparison" class="comparison-section">
+        <h2 class="section-title">The Cost of Distraction</h2>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Android Studio</th>
+                    <th>Ktroid CLI</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>RAM Usage</strong></td>
+                    <td>2.5 GB - 4.0 GB+</td>
+                    <td>~50 MB</td>
+                </tr>
+                <tr>
+                    <td><strong>Install Size</strong></td>
+                    <td>~2 GB (IDE only)</td>
+                    <td>~100 KB</td>
+                </tr>
+                <tr>
+                    <td><strong>Startup Time</strong></td>
+                    <td>30s - 2min</td>
+                    <td>Instant (0.1s)</td>
+                </tr>
+                <tr>
+                    <td><strong>Distractions</strong></td>
+                    <td>Endless menus & popups</td>
+                    <td>Zero</td>
+                </tr>
+                <tr>
+                    <td><strong>Dependency Mgmt</strong></td>
+                    <td>Manual Google Search</td>
+                    <td>Command-based (`ktd dep`)</td>
+                </tr>
+            </tbody>
+        </table>
+        <p
+            style="text-align: center; margin-top: 2rem; color: #8b949e; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <strong>Note:</strong> Ktroid is not a replacement for full-scale IDE features like visual layout editors or
+            complex debuggers. It is a focused alternatives for rapid iteration and coding workflows.
+        </p>
+    </section>
+
+    <section class="hero" style="background: none; padding-bottom: 4rem;">
+        <h2>Ready to regain control?</h2>
+        <a href="docs.html" class="cta-button">Start the Guide</a>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ktroid</h3>
+                <p style="color: var(--text-secondary);">Build Android Apps, Not Distractions</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="docs.html">Documentation</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="https://github.com/apfsource/ktroid" target="_blank">GitHub</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="license.html">License (GPL v3)</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="disclaimer.html">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 ktroid. GPL v3.0 License. Built for Developers, By Developers.</p>
+        </div>
+    </footer>
+
+    <script src="copy.js"></script>
+</body>
+
+</html>

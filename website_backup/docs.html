@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>\n    <link rel="canonical" href="https://ktd.acharyaml.com/docs.html" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Documentation - ktroid</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <nav>
+        <div class="container">
+            <div class="logo"><a href="index.html" style="color: inherit;">ktroid_</a></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="docs.html" class="active">Documentation</a>
+                <a href="about.html">About</a>
+                <a href="https://github.com/apfsource/ktroid" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="docs-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <h3>Getting Started</h3>
+            <a href="#introduction" class="active">Introduction</a>
+            <a href="#installation">Installation</a>
+            <a href="#quick-start">Quick Start</a>
+
+            <h3>Core Commands</h3>
+            <a href="#cmd-setup">setup</a>
+            <a href="#cmd-create">create</a>
+            <a href="#cmd-init">init</a>
+            <a href="#cmd-build">build</a>
+            <a href="#cmd-run">run</a>
+            <a href="#cmd-clean">clean</a>
+
+            <h3>Device Management</h3>
+            <a href="#cmd-emulator">emulator</a>
+            <a href="#cmd-install">install</a>
+            <a href="#cmd-uninstall">uninstall</a>
+            <a href="#cmd-logs">logs</a>
+
+            <h3>Development Tools</h3>
+            <a href="#cmd-dep">dep</a>
+            <a href="#cmd-dep-list">dep-list</a>
+            <a href="#cmd-dep-remove">dep-remove</a>
+            <a href="#cmd-perm">perm</a>
+            <a href="#cmd-perm-list">perm-list</a>
+            <a href="#cmd-perm-remove">perm-remove</a>
+
+            <h3>Resources</h3>
+            <a href="#cmd-icon">icon</a>
+            <a href="#cmd-logo">logo</a>
+            <a href="#cmd-color">color</a>
+
+            <h3>Testing & Release</h3>
+            <a href="#cmd-test">test</a>
+            <a href="#cmd-bump">bump</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="page-content">
+            <section id="introduction">
+                <h2>📚 Introduction</h2>
+                <p>ktroid is a minimalistic CLI tool for Native Android development without Android Studio. Build, test, and deploy Android apps using just your terminal and favorite text editor.</p>
+                
+                <div class="success-box">
+                    <strong>✨ Perfect For:</strong> Developers with low-spec hardware, terminal enthusiasts, and anyone who wants a distraction-free Android development workflow.
+                </div>
+            </section>
+
+            <section id="installation">
+                <h2>⚙️ Installation</h2>
+                <h3>Download</h3>
+                <div class="command-box">
+                    <div class="command-syntax">wget https://github.com/apfsource/ktroid/releases/download/v1.4.0/ktroid.py</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Make Executable</h3>
+                <div class="command-box">
+                    <div class="command-syntax">chmod +x ktroid.py && mv ktroid.py /usr/local/bin/ktroid</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Verify Installation</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid --version</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+            </section>
+
+            <section id="quick-start">
+                <h2>🚀 Quick Start</h2>
+                <p>Get your first Android app running in under 2 minutes:</p>
+
+                <h3>Step 1: Setup Android SDK</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid setup</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Step 2: Create Project</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid init MyFirstApp</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Step 3: Build & Run</h3>
+                <div class="command-box">
+                    <div class="command-syntax">cd MyFirstApp && ktroid run</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <div class="success-box">
+                    <strong>🎉 Done!</strong> Your app is now running on the emulator or connected device.
+                </div>
+            </section>
+
+
+            <!-- CORE COMMANDS -->
+            <section id="cmd-setup">
+                <h2>🔧 setup - Android SDK Setup</h2>
+                <p>Downloads and configures Android SDK, Command Line Tools, and essential build tools for your system.</p>
+                
+                <h3>Syntax</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid setup</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>What It Does</h3>
+                <ul>
+                    <li>Downloads Android Command Line Tools</li>
+                    <li>Installs latest Android SDK Platform</li>
+                    <li>Sets up build tools and platform tools</li>
+                    <li>Configures environment variables</li>
+                    <li>Installs Gradle wrapper</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>⚠️ First Time Setup:</strong> This downloads ~500MB. Make sure you have a stable internet connection.
+                </div>
+            </section>
+
+            <section id="cmd-create">
+                <h2>📦 create/init - Create New Project</h2>
+                <p>Initialize a new Android project with Kotlin, Jetpack Compose, and Material 3 design.</p>
+                
+                <h3>Syntax</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid create ProjectName</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Examples</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid init TodoApp</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Project Structure</h3>
+                <p>Creates a complete Android project with:</p>
+                <ul>
+                    <li><code>app/src/main/</code> - Main source directory</li>
+                    <li><code>MainActivity.kt</code> - Entry point with Jetpack Compose</li>
+                    <li><code>AndroidManifest.xml</code> - App configuration</li>
+                    <li><code>build.gradle</code> - Build configuration</li>
+                    <li><code>res/</code> - Resources (colors, strings, themes)</li>
+                </ul>
+            </section>
+
+            <section id="cmd-build">
+                <h2>🔨 build - Build Application</h2>
+                <p>Compile your Android project into an APK file.</p>
+                
+                <h3>Syntax</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid build [debug|release]</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Examples</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid build</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <div class="command-box">
+                    <div class="command-syntax">ktroid build release</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <p><strong>Output:</strong> APK file in <code>app/build/outputs/apk/</code></p>
+            </section>
+
+            <section id="cmd-run">
+                <h2>▶️ run - Build & Launch</h2>
+                <p>Builds the app, installs on connected device/emulator, and launches it.</p>
+                
+                <h3>Syntax</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid run</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <div class="important-box">
+                    <strong>💡 One Command Magic:</strong> This is your go-to command for quick iterations. Changes code → ktroid run → see results!
+                </div>
+            </section>
+
+            <section id="cmd-emulator">
+                <h2>📱 emulator - AVD Management</h2>
+                <p>List, start, and create Android Virtual Devices (emulators).</p>
+                
+                <h3>List Available Emulators</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid emulator list</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Start Emulator</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid emulator start</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Create New Emulator</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid emulator create Pixel_7</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+            </section>
+
+            <section id="cmd-dep">
+                <h2>📦 dep - Add Dependencies</h2>
+                <p>Quickly add libraries from MavenCentral with smart search.</p>
+                
+                <h3>Syntax</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid dep [library-name]</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Popular Examples</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid dep retrofit</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <div class="command-box">
+                    <div class="command-syntax">ktroid dep coil</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <div class="command-box">
+                    <div class="command-syntax">ktroid dep room</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+            </section>
+
+            <section id="cmd-test">
+                <h2>🧪 test - Run Tests</h2>
+                <p>Execute unit tests, instrumented tests, or all tests.</p>
+                
+                <h3>Run All Tests</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid test</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Unit Tests Only</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid test unit</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Instrumented Tests</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid test instrumented</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+            </section>
+
+            <section id="cmd-bump">
+                <h2>📈 bump - Version Management</h2>
+                <p>Increment app version automatically.</p>
+                
+                <h3>Bump Minor Version</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid bump minor</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <h3>Bump Major Version</h3>
+                <div class="command-box">
+                    <div class="command-syntax">ktroid bump major</div>
+                    <button class="copy-btn">
+                        <svg fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <p><strong>Example:</strong> 1.0.0 → 1.1.0 (minor) or 2.0.0 (major)</p>
+            </section>
+
+            <div class="success-box">
+                <strong>📖 More Commands:</strong> Use <code>ktroid --help</code> to see all 24 commands with detailed descriptions.
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ktroid</h3>
+                <p style="color: var(--text-secondary);">Free and Open Source Forever</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="docs.html">Documentation</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="license.html">License (GPL v3)</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="disclaimer.html">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 ktroid. GPL v3.0 License.</p>
+        </div>
+    </footer>
+
+    <script src="copy.js"></script>
+</body>
+</html>
