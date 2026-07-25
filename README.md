@@ -142,6 +142,15 @@ Compile and build the project.
   ktd build release
   ```
 
+#### `lint`
+Run Android code quality and linting checks.
+- **Usage:** `ktd lint`
+- **What it does:** Executes `./gradlew lint` to analyze your project's source code for potential bugs, security issues, optimization, and accessibility problems.
+- **Example:**
+  ```bash
+  ktd lint
+  ```
+
 #### `run`
 Build, install, and launch the application.
 - **Usage:** `ktd run`
@@ -218,6 +227,35 @@ Uninstall an app from the device.
   ktd uninstall com.mycorp.app
   ```
 
+#### `screen`
+Start screen mirroring using scrcpy.
+- **Usage:** `ktd screen`
+- **What it does:** Connects to your device and starts a screen mirroring session directly on your PC, allowing you to control the device with your mouse and keyboard. *Requires `scrcpy` to be installed on your system.*
+- **Example:**
+  ```bash
+  ktd screen
+  ```
+
+#### `connect-wifi`
+Connect to an Android device wirelessly via Wi-Fi (Android 11+).
+- **Usage:** `ktd connect-wifi <ip_address>`
+- **Arguments:**
+  - `ip_address`: The IP address (and optional port) of the device. Default port is `5555`.
+- **What it does:** Wraps `adb connect`. Useful for deploying and debugging without a USB cable. Requires "Wireless Debugging" to be enabled on the device.
+- **Example:**
+  ```bash
+  ktd connect-wifi 192.168.1.15
+  ```
+
+#### `db-pull`
+Extract app databases and shared preferences from the device.
+- **Usage:** `ktd db-pull [--dest <folder>]`
+- **What it does:** Uses `run-as` to safely export your app's sandboxed SQLite databases and XML shared preferences directly to your PC for inspection. Extremely helpful for debugging local storage issues.
+- **Example:**
+  ```bash
+  ktd db-pull --dest my_app_data
+  ```
+
 ### Dependency Management
 
 #### `dep`
@@ -290,6 +328,20 @@ Generate multi-density app icons.
   ktd logo my_design.png
   ```
 
+#### `string-add`
+Add a new string resource directly into `strings.xml`.
+- **Usage:** `ktd string-add <name> <value> [--locale <code>]`
+- **Arguments:**
+  - `name`: The resource name (e.g., `app_name`).
+  - `value`: The text value.
+  - `--locale`: (Optional) The locale folder to target (e.g., `es` for `values-es`).
+- **What it does:** Interactively injects a new `<string>` tag into your project's resource files, streamlining the localization process without opening an XML editor.
+- **Example:**
+  ```bash
+  ktd string-add welcome_message "Welcome to Ktroid!"
+  ktd string-add welcome_message "¡Bienvenido a Ktroid!" --locale es
+  ```
+
 ### Testing
 
 #### `test`
@@ -314,6 +366,17 @@ Bump the app version.
 - **Example:**
   ```bash
   ktd bump both
+  ```
+
+### CI/CD & Automation
+
+#### `ci-init`
+Initialize CI/CD pipeline configurations.
+- **Usage:** `ktd ci-init [--provider <github|gitlab>]`
+- **What it does:** Automatically generates standardized workflows (e.g., `.github/workflows/android.yml` or `.gitlab-ci.yml`) to instantly enable cloud building, testing, and artifact generation on every Git push.
+- **Example:**
+  ```bash
+  ktd ci-init
   ```
 
 ### Environment Settings

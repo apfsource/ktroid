@@ -340,6 +340,46 @@ def logo(path: str = typer.Argument(..., help="Path to logo image")):
 
 
 
+def string_add(name: str = typer.Argument(..., help="String resource name (e.g., app_name)"),
+               value: str = typer.Argument(..., help="Default string value"),
+               locale: str = typer.Option(None, "--locale", "-l", help="Locale code (e.g., es, hi) to add to specific strings.xml")):
+    """Add a new string resource directly into strings.xml."""
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
+
+    res_dir = "app/src/main/res"
+    if not os.path.exists(res_dir):
+        print_error("Error: Resource directory not found.")
+        return
+
+    target_dir = os.path.join(res_dir, f"values-{locale}") if locale else os.path.join(res_dir, "values")
+    os.makedirs(target_dir, exist_ok=True)
+    strings_file = os.path.join(target_dir, "strings.xml")
+
+    print_info(f"Adding string resource to {strings_file}...")
+
+    if not os.path.exists(strings_file):
+        with open(strings_file, "w") as f:
+            f.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n</resources>")
+
+    with open(strings_file, "r") as f:
+        content = f.read()
+
+    # Check if string already exists
+    if f'name="{name}"' in content:
+        print_warning(f"String resource '{name}' already exists in this file.")
+        return
+
+    # Insert before closing tag
+    new_content = content.replace("</resources>", f'    <string name="{name}">{value}</string>\n</resources>')
+
+    with open(strings_file, "w") as f:
+        f.write(new_content)
+
+    print_success(f"String '{name}' added successfully.")
+
+
 def bump(bump_type: str = typer.Argument("both", help="Bump type (code, name, both)")):
     """Bump version code/name."""
     project_root = find_project_root()

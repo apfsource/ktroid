@@ -271,3 +271,108 @@ def uninstall(package_name: str = typer.Argument(None, help="Package name to uni
         print_error("Uninstallation failed.")
 
 
+def screen():
+    """Start screen mirroring using scrcpy."""
+    if not shutil.which("scrcpy"):
+        print_error("scrcpy is not installed on your system.")
+        print_info("Install scrcpy to use this feature (e.g., 'sudo apt install scrcpy' or 'brew install scrcpy').")
+        return
+
+    devices = get_connected_devices()
+    if not devices:
+        print_error("No connected devices found for screen mirroring.")
+        return
+
+    target_device = devices[0]
+    if len(devices) > 1:
+        print_info("Multiple devices found:")
+        for i, d in enumerate(devices):
+            print(f"{i+1}. {d}")
+
+        try:
+            sel = int(typer.prompt("Select device (number): "))
+            target_device = devices[sel-1]
+        except:
+            print_error("Invalid selection.")
+            return
+
+    print_info(f"Starting scrcpy for device: {target_device}...")
+    try:
+        # Run scrcpy and do not wait if we want it in background, but standard scrcpy execution blocks until closed
+        subprocess.run(["scrcpy", "-s", target_device])
+        print_success("Screen mirroring session ended.")
+    except Exception as e:
+        print_error(f"Failed to start scrcpy: {e}")
+
+
+def connect_wifi(ip_address: str = typer.Argument(..., help="IP Address of the Android device (e.g., 192.168.1.5:5555)")):
+    """Connect to a device wirelessly via ADB (Android 11+)."""
+    print_info(f"Attempting to connect to {ip_address} via Wi-Fi...")
+
+    # Ensure port is included, default to 5555
+    if ":" not in ip_address:
+        ip_address += ":5555"
+
+    cmd = f"adb connect {ip_address}"
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+
+    if "connected to" in result.stdout.lower() or "already connected" in result.stdout.lower():
+        print_success(f"Successfully connected to {ip_address}.")
+    else:
+        print_error("Failed to connect.")
+        if result.stdout:
+            print(result.stdout.strip())
+        if result.stderr:
+            print(result.stderr.strip())
+        print_warning("Ensure your device and PC are on the same Wi-Fi network, and Wireless Debugging is enabled in Developer Options.")
+
+
+def db_pull(destination: str = typer.Option(".", "--dest", "-d", help="Destination folder to save data")):
+    """Pull app database and shared preferences from device."""
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
+
+    # 1. Get Package Name
+    app_id = None
+    if os.path.exists("app/build.gradle"):
+        with open("app/build.gradle", "r") as f:
+            cnt = f.read()
+            m = re.search(r'applicationId\s+"?([^"\n]+)"?', cnt)
+            if m: app_id = m.group(1)
+
+    if not app_id:
+        app_id = typer.prompt("Could not find applicationId. Please enter package name manually")
+
+    devices = get_connected_devices()
+    if not devices:
+        print_error("No connected devices found.")
+        return
+
+    target_device = devices[0]
+    if len(devices) > 1:
+        print_info("Multiple devices found:")
+        for i, d in enumerate(devices):
+            print(f"{i+1}. {d}")
+
+        try:
+            sel = int(typer.prompt("Select device (number): "))
+            target_device = devices[sel-1]
+        except:
+            print_error("Invalid selection.")
+            return
+
+    os.makedirs(destination, exist_ok=True)
+    print_info(f"Pulling data for {app_id} from {target_device}...")
+
+    # Shared Preferences
+    prefs_dest = os.path.join(destination, "shared_prefs")
+    print_info("Pulling Shared Preferences...")
+    run_command(f"adb -s {target_device} exec-out run-as {app_id} tar c shared_prefs/ 2>/dev/null | tar x -C {destination}")
+
+    # Databases
+    db_dest = os.path.join(destination, "databases")
+    print_info("Pulling Databases...")
+    run_command(f"adb -s {target_device} exec-out run-as {app_id} tar c databases/ 2>/dev/null | tar x -C {destination}")
+
+    print_success(f"Data pull completed. Check the '{destination}' folder.")

@@ -3,10 +3,11 @@ from rich.console import Console
 
 # Import command functions
 from ktroid.commands.project import create, init, info
-from ktroid.commands.build import build, clean, signing, run, test
-from ktroid.commands.device import logs, emulator, install, uninstall
-from ktroid.commands.packages import dep, dep_list, dep_remove, perm, perm_remove, logo, bump
+from ktroid.commands.build import build, clean, signing, run, test, lint
+from ktroid.commands.device import logs, emulator, install, uninstall, screen, connect_wifi, db_pull
+from ktroid.commands.packages import dep, dep_list, dep_remove, perm, perm_remove, logo, bump, string_add
 from ktroid.commands.setup import setup, config, check, update_config
+from ktroid.commands.ci import ci_init
 from ktroid import __version__
 
 console = Console()
@@ -37,12 +38,16 @@ app.command(name="clean", rich_help_panel="🔨 Build Commands")(clean)
 app.command(name="signing", rich_help_panel="🔨 Build Commands")(signing)
 app.command(name="run", rich_help_panel="🔨 Build Commands")(run)
 app.command(name="test", rich_help_panel="🔨 Build Commands")(test)
+app.command(name="lint", rich_help_panel="🔨 Build Commands")(lint)
 
 # 📱 Device Commands
 app.command(name="logs", rich_help_panel="📱 Device Commands")(logs)
 app.command(name="emulator", rich_help_panel="📱 Device Commands")(emulator)
 app.command(name="install", rich_help_panel="📱 Device Commands")(install)
 app.command(name="uninstall", rich_help_panel="📱 Device Commands")(uninstall)
+app.command(name="screen", rich_help_panel="📱 Device Commands")(screen)
+app.command(name="connect-wifi", rich_help_panel="📱 Device Commands")(connect_wifi)
+app.command(name="db-pull", rich_help_panel="📱 Device Commands")(db_pull)
 
 # 🧩 Package Commands
 app.command(name="dep", rich_help_panel="🧩 Package Commands")(dep)
@@ -52,6 +57,10 @@ app.command(name="perm", rich_help_panel="🧩 Package Commands")(perm)
 app.command(name="perm-remove", rich_help_panel="🧩 Package Commands")(perm_remove)
 app.command(name="logo", rich_help_panel="🧩 Package Commands")(logo)
 app.command(name="bump", rich_help_panel="🧩 Package Commands")(bump)
+app.command(name="string-add", rich_help_panel="🧩 Package Commands")(string_add)
+
+# ⚙️ CI/CD Commands
+app.command(name="ci-init", rich_help_panel="⚙️ CI/CD Commands")(ci_init)
 
 # ⚙️ Setup Commands
 app.command(name="setup", rich_help_panel="⚙️ Setup Commands")(setup)

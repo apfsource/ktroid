@@ -292,6 +292,26 @@ def run():
 
 
 
+def lint():
+    """Run code quality and linting checks."""
+    project_root = find_project_root()
+    if not project_root:
+        print_error("Error: Project root not found.")
+        sys.exit(1)
+    os.chdir(project_root)
+
+    if not os.path.exists("./gradlew"):
+        print_error("Error: gradlew not found.")
+        sys.exit(1)
+
+    os.chmod("./gradlew", 0o755)
+    print_info("Running Android Lint...")
+    if run_command("./gradlew lint"):
+        print_success("Linting passed successfully.")
+    else:
+        print_warning("Linting issues found. Check the reports in app/build/reports/lint-results.html")
+
+
 def test(test_type: str = typer.Argument("unit", help="Type of test (unit, instrumented, all)")):
     """Run tests"""
     project_root = find_project_root()
