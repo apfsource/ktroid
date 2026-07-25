@@ -29,4 +29,4 @@ ktd = "ktroid.cli:main"
 packages = ["ktroid"]
 
 [tool.setuptools.package-data]
-ktroid = ["templates/*", "config.json"]
+ktroid = ["templates/*", "config.json", "img/*"]

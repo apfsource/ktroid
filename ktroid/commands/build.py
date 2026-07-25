@@ -6,8 +6,9 @@ import typer
 import re
 import subprocess
 from rich.prompt import Confirm
-from ktroid.core.utils import print_info, print_success, print_error, print_warning, run_command, get_script_dir
+from ktroid.core.utils import print_info, print_success, print_error, print_warning, run_command, get_script_dir, find_project_root
 from ktroid.core.config import CONFIG
+from ktroid.commands.device import get_connected_devices
 
 def verify_apk(apk_path):
     """Verify APK signature using apksigner or jarsigner."""
@@ -59,8 +60,14 @@ def verify_apk(apk_path):
 
 def build(action: str = typer.Argument("debug", help="Build type (debug, release, bundle)")):
     """Build the project"""
+    project_root = find_project_root()
+    if not project_root:
+        print_error("Error: Project root not found. Are you inside an Android project?")
+        sys.exit(1)
+    os.chdir(project_root)
+
     if not os.path.exists("./gradlew"):
-        print_error("Error: gradlew not found. Are you in the project root?")
+        print_error("Error: gradlew not found in project root.")
         sys.exit(1)
 
     # Ensure executable
@@ -109,6 +116,12 @@ def build(action: str = typer.Argument("debug", help="Build type (debug, release
 
 def clean():
     """Clean the project"""
+    project_root = find_project_root()
+    if not project_root:
+        print_error("Error: Project root not found.")
+        sys.exit(1)
+    os.chdir(project_root)
+
     if not os.path.exists("./gradlew"):
         print_error("Error: gradlew not found.")
         sys.exit(1)
@@ -122,6 +135,12 @@ def clean():
 
 def signing():
     """Configure signing"""
+    project_root = find_project_root()
+    if not project_root:
+        print_error("Error: Project root not found.")
+        sys.exit(1)
+    os.chdir(project_root)
+
     print_info("Configuring Signing...")
     props_file = "signing.properties"
     
@@ -182,10 +201,13 @@ def signing():
 
 
 
-from ktroid.commands.device import get_connected_devices  # We'll create this later
-
 def run():
     """Build, Install and Run."""
+    project_root = find_project_root()
+    if not project_root:
+        print_error("Error: Project root not found.")
+        sys.exit(1)
+    os.chdir(project_root)
     
     # 1. Select Device
     devices = get_connected_devices()
@@ -266,6 +288,12 @@ def run():
 
 def test(test_type: str = typer.Argument("unit", help="Type of test (unit, instrumented, all)")):
     """Run tests"""
+    project_root = find_project_root()
+    if not project_root:
+        print_error("Error: Project root not found.")
+        sys.exit(1)
+    os.chdir(project_root)
+
     if not os.path.exists("./gradlew"):
         print_error("Error: gradlew not found.")
         sys.exit(1)

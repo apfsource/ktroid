@@ -21,6 +21,26 @@ def get_script_dir():
     # Returns the root of the ktroid package
     return os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
+def find_project_root(current_dir=None):
+    """
+    Climbs the directory tree to find the project root containing 'gradlew' or 'app/build.gradle'.
+    Returns the project root path if found, otherwise None.
+    """
+    if current_dir is None:
+        current_dir = os.getcwd()
+
+    original_dir = current_dir
+    while True:
+        if os.path.exists(os.path.join(current_dir, "gradlew")) or \
+           os.path.exists(os.path.join(current_dir, "app", "build.gradle")):
+            return current_dir
+
+        parent_dir = os.path.dirname(current_dir)
+        if parent_dir == current_dir:
+            # Reached root of the filesystem
+            return None
+        current_dir = parent_dir
+
 def run_command(command, cwd=None, show_output=True):
     try:
         process = subprocess.Popen(

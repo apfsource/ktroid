@@ -5,7 +5,7 @@ import re
 import subprocess
 import typer
 from rich.prompt import Confirm
-from ktroid.core.utils import print_info, print_success, print_error, print_warning, run_command
+from ktroid.core.utils import print_info, print_success, print_error, print_warning, run_command, find_project_root
 
 def get_connected_devices():
     """Return list of connected devices."""
@@ -25,6 +25,10 @@ def get_connected_devices():
 
 def logs():
     """Smart Logcat Viewer."""
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
+
     # 1. Get Package Name (from build.gradle or user input?)
     # Parsing build.gradle for applicationId
     app_id = None
@@ -48,6 +52,8 @@ def logs():
             print_warning("App is not running. Showing all logs containing package name...")
             filter_cmd = app_id
         else:
+            # Handle multiple PIDs if returned by splitting and picking the first
+            pid = pid.split()[0]
             print_info(f"PID found: {pid}")
             filter_cmd = f" --pid={pid}"
             
@@ -218,6 +224,10 @@ def install(apk_path: str = typer.Argument(..., help="Path to APK file")):
 
 def uninstall(package_name: str = typer.Argument(None, help="Package name to uninstall")):
     """Uninstall app from device."""
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
+
     # Get package name
     package_name = package_name
     
