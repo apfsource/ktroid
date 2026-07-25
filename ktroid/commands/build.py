@@ -158,10 +158,9 @@ def signing():
     
     if not keystore_path:
         print_info("Generating new keystore...")
-        keystore_path = "release.keystore"
-        key_alias = "key0"
+        keystore_path = typer.prompt("Enter new keystore filename", default="release.keystore").strip()
+        key_alias = typer.prompt("Enter key alias", default="key0").strip()
         
-        # Ideally use getpass.getpass()
         import getpass
         pwd = getpass.getpass("Enter new keystore password: ")
         pwd_confirm = getpass.getpass("Confirm password: ")
@@ -172,8 +171,15 @@ def signing():
         store_password = pwd
         key_password = pwd
         
-        # dname
-        dname = "CN=Android Dev, OU=Ktroid, O=Ktroid, L=Unknown, S=Unknown, C=US"
+        print_info("Please provide details for the keystore certificate:")
+        cn = typer.prompt("First and Last Name (CN)", default="Unknown")
+        ou = typer.prompt("Organizational Unit (OU)", default="Unknown")
+        o = typer.prompt("Organization Name (O)", default="Unknown")
+        l = typer.prompt("City or Locality (L)", default="Unknown")
+        st = typer.prompt("State or Province (ST)", default="Unknown")
+        c = typer.prompt("Country Code (C) [e.g., US, IN]", default="US")
+
+        dname = f"CN={cn}, OU={ou}, O={o}, L={l}, ST={st}, C={c}"
         
         cmd = (f'keytool -genkey -v -keystore {keystore_path} -alias {key_alias} -keyalg RSA '
                f'-keysize 2048 -validity 10000 -storepass {store_password} -keypass {key_password} '
