@@ -113,9 +113,12 @@ def setup():
     if shutil.which("java"):
         try:
             result = subprocess.run(['java', '-version'], capture_output=True, text=True)
-            print_success(f"[OK] Java is installed: {result.stderr.splitlines()[0]}")
-        except:
-            print_success("[OK] Java is installed.")
+            if result.returncode == 0:
+                print_success(f"[OK] Java is installed: {result.stderr.splitlines()[0]}")
+            else:
+                print_warning(f"[WARN] Java executable found, but execution failed: {result.stderr.strip()}")
+        except Exception as e:
+            print_warning(f"[WARN] Java executable found, but an error occurred checking version: {e}")
     else:
         print_error("[MISSING] Java JDK was not found on your system.")
         print_warning("Java is a system-level dependency required by Gradle and Android SDK.")

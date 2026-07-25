@@ -5,7 +5,7 @@ import re
 import shutil
 import typer
 from rich.prompt import Confirm
-from ktroid.core.utils import print_info, print_success, print_error, print_warning, get_script_dir
+from ktroid.core.utils import print_info, print_success, print_error, print_warning, get_script_dir, find_project_root
 
 COMMON_DEPS = {
     "retrofit": "com.squareup.retrofit2:retrofit:2.9.0",
@@ -37,6 +37,10 @@ COMMON_PERMS = {
 
 def dep(name: str = typer.Argument(None, help="Dependency name or shortcut")):
     """Add a dependency."""
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
+
     if not name:
         print_info("Available Shortcuts:")
         for k, v in COMMON_DEPS.items():
@@ -85,6 +89,10 @@ def dep(name: str = typer.Argument(None, help="Dependency name or shortcut")):
 
 def dep_list():
     """List all dependencies."""
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
+
     build_file = "app/build.gradle"
     
     if not os.path.exists(build_file):
@@ -122,6 +130,10 @@ def dep_list():
 
 def dep_remove(dep_name: str = typer.Argument(..., help="Dependency to remove")):
     """Remove a dependency."""
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
+
     build_file = "app/build.gradle"
     
     if not os.path.exists(build_file):
@@ -153,6 +165,10 @@ def dep_remove(dep_name: str = typer.Argument(..., help="Dependency to remove"))
 
 def perm(name: str = typer.Argument(None, help="Permission to add")):
     """Add a permission to AndroidManifest."""
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
+
     if not name:
         print_info("Common Permissions:")
         for k, v in COMMON_PERMS.items():
@@ -204,6 +220,9 @@ def perm(name: str = typer.Argument(None, help="Permission to add")):
 
 def perm_remove(perm_name: str = typer.Argument(..., help="Permission to remove")):
     """Remove a permission."""
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
     
     # Check if it's a shortcut
     if perm_name.lower() in COMMON_PERMS:
@@ -241,7 +260,13 @@ def perm_remove(perm_name: str = typer.Argument(..., help="Permission to remove"
 
 def logo(path: str = typer.Argument(..., help="Path to logo image")):
     """Change app logo with multiple density support."""
-    src_image = path
+    # Ensure src image is absolute path before chdir
+    src_image = os.path.abspath(path)
+
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
+
     if not os.path.exists(src_image):
         print_error(f"Error: Image '{src_image}' not found.")
         return
@@ -317,6 +342,10 @@ def logo(path: str = typer.Argument(..., help="Path to logo image")):
 
 def bump(bump_type: str = typer.Argument("both", help="Bump type (code, name, both)")):
     """Bump version code/name."""
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
+
     build_file = "app/build.gradle"
     
     if not os.path.exists(build_file):

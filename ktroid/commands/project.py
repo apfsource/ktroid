@@ -132,8 +132,14 @@ def init():
 
     generate_project_structure(cwd, project_name, package_name)
 
+from ktroid.core.utils import find_project_root
+
 def info():
     """Extract info from build.gradle."""
+    project_root = find_project_root()
+    if project_root:
+        os.chdir(project_root)
+
     build_file = "app/build.gradle"
     if not os.path.exists(build_file):
         print("Error: app/build.gradle not found.")

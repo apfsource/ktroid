@@ -6,8 +6,9 @@ import typer
 import re
 import subprocess
 from rich.prompt import Confirm
-from ktroid.core.utils import print_info, print_success, print_error, print_warning, run_command, get_script_dir
+from ktroid.core.utils import print_info, print_success, print_error, print_warning, run_command, get_script_dir, find_project_root
 from ktroid.core.config import CONFIG
+from ktroid.commands.device import get_connected_devices
 
 def verify_apk(apk_path):
     """Verify APK signature using apksigner or jarsigner."""
@@ -59,8 +60,14 @@ def verify_apk(apk_path):
 
 def build(action: str = typer.Argument("debug", help="Build type (debug, release, bundle)")):
     """Build the project"""
+    project_root = find_project_root()
+    if not project_root:
+        print_error("Error: Project root not found. Are you inside an Android project?")
+        sys.exit(1)
+    os.chdir(project_root)
+
     if not os.path.exists("./gradlew"):
-        print_error("Error: gradlew not found. Are you in the project root?")
+        print_error("Error: gradlew not found in project root.")
         sys.exit(1)
 
     # Ensure executable
@@ -109,6 +116,12 @@ def build(action: str = typer.Argument("debug", help="Build type (debug, release
 
 def clean():
     """Clean the project"""
+    project_root = find_project_root()
+    if not project_root:
+        print_error("Error: Project root not found.")
+        sys.exit(1)
+    os.chdir(project_root)
+
     if not os.path.exists("./gradlew"):
         print_error("Error: gradlew not found.")
         sys.exit(1)
@@ -122,6 +135,12 @@ def clean():
 
 def signing():
     """Configure signing"""
+    project_root = find_project_root()
+    if not project_root:
+        print_error("Error: Project root not found.")
+        sys.exit(1)
+    os.chdir(project_root)
+
     print_info("Configuring Signing...")
     props_file = "signing.properties"
     
@@ -139,10 +158,9 @@ def signing():
     
     if not keystore_path:
         print_info("Generating new keystore...")
-        keystore_path = "release.keystore"
-        key_alias = "key0"
+        keystore_path = typer.prompt("Enter new keystore filename", default="release.keystore").strip()
+        key_alias = typer.prompt("Enter key alias", default="key0").strip()
         
-        # Ideally use getpass.getpass()
         import getpass
         pwd = getpass.getpass("Enter new keystore password: ")
         pwd_confirm = getpass.getpass("Confirm password: ")
@@ -153,8 +171,15 @@ def signing():
         store_password = pwd
         key_password = pwd
         
-        # dname
-        dname = "CN=Android Dev, OU=Ktroid, O=Ktroid, L=Unknown, S=Unknown, C=US"
+        print_info("Please provide details for the keystore certificate:")
+        cn = typer.prompt("First and Last Name (CN)", default="Unknown")
+        ou = typer.prompt("Organizational Unit (OU)", default="Unknown")
+        o = typer.prompt("Organization Name (O)", default="Unknown")
+        l = typer.prompt("City or Locality (L)", default="Unknown")
+        st = typer.prompt("State or Province (ST)", default="Unknown")
+        c = typer.prompt("Country Code (C) [e.g., US, IN]", default="US")
+
+        dname = f"CN={cn}, OU={ou}, O={o}, L={l}, ST={st}, C={c}"
         
         cmd = (f'keytool -genkey -v -keystore {keystore_path} -alias {key_alias} -keyalg RSA '
                f'-keysize 2048 -validity 10000 -storepass {store_password} -keypass {key_password} '
@@ -182,10 +207,13 @@ def signing():
 
 
 
-from ktroid.commands.device import get_connected_devices  # We'll create this later
-
 def run():
     """Build, Install and Run."""
+    project_root = find_project_root()
+    if not project_root:
+        print_error("Error: Project root not found.")
+        sys.exit(1)
+    os.chdir(project_root)
     
     # 1. Select Device
     devices = get_connected_devices()
@@ -266,6 +294,12 @@ def run():
 
 def test(test_type: str = typer.Argument("unit", help="Type of test (unit, instrumented, all)")):
     """Run tests"""
+    project_root = find_project_root()
+    if not project_root:
+        print_error("Error: Project root not found.")
+        sys.exit(1)
+    os.chdir(project_root)
+
     if not os.path.exists("./gradlew"):
         print_error("Error: gradlew not found.")
         sys.exit(1)
