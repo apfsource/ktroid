@@ -2,6 +2,7 @@
 import os
 import sys
 import re
+import shutil
 import subprocess
 import typer
 from rich.prompt import Confirm
@@ -368,11 +369,11 @@ def db_pull(destination: str = typer.Option(".", "--dest", "-d", help="Destinati
     # Shared Preferences
     prefs_dest = os.path.join(destination, "shared_prefs")
     print_info("Pulling Shared Preferences...")
-    run_command(f"adb -s {target_device} exec-out run-as {app_id} tar c shared_prefs/ 2>/dev/null | tar x -C {destination}")
+    run_command(f'adb -s {target_device} exec-out "run-as {app_id} tar c shared_prefs/ 2>/dev/null" | tar x -C {destination}')
 
     # Databases
     db_dest = os.path.join(destination, "databases")
     print_info("Pulling Databases...")
-    run_command(f"adb -s {target_device} exec-out run-as {app_id} tar c databases/ 2>/dev/null | tar x -C {destination}")
+    run_command(f'adb -s {target_device} exec-out "run-as {app_id} tar c databases/ 2>/dev/null" | tar x -C {destination}')
 
     print_success(f"Data pull completed. Check the '{destination}' folder.")

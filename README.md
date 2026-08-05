@@ -4,7 +4,7 @@ Build, run, and test native Android apps entirely from the terminal.
 ![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL--3.0-green.svg)
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey.svg)
-![Version](https://img.shields.io/badge/version-2.1.0-orange.svg)
+![Version](https://img.shields.io/badge/version-2.2.0-orange.svg)
 
 ## What is ktroid?
 

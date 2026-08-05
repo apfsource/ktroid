@@ -2,11 +2,14 @@
 
 This document outlines the planned features and improvements for upcoming versions to make `ktroid` a world-class, industry-standard CLI tool for Android development.
 
-## 🔜 Next Release (v2.1.0)
-- **Dynamic Config Updater (`ktd update-config`)**: Automatically fetch and update the latest versions of Kotlin, Gradle, AGP, and Android SDK from official APIs.
-- **Auto-Signing (`ktd signing init`)**: Automatically generate secure release keystores and configure them in `signing.properties` without manual XML/Gradle editing.
+## ✅ Recently Completed (v2.1.0 & v2.2.0)
+- **Dynamic Config Updater (`ktd update-config`)**: Automatically fetch and update the latest versions of Kotlin, Gradle, AGP, and Android SDK.
+- **Auto-Signing (`ktd signing`)**: Interactive keystore generation and automatic configuration.
+- **CI/CD Integration**: One-command GitHub Actions and GitLab CI setup (`ktd ci-init`).
+- **Advanced Device Tools**: Screen mirroring (`ktd screen`), wireless ADB (`ktd connect-wifi`), and data extraction (`ktd db-pull`).
+- **Code Quality**: Built-in Android linting (`ktd lint`).
 
-## 🌟 Short-term Goals (v2.2.0 - v2.4.0)
+## 🔜 Next Release (v2.3.0)
 - **Project Templates**: Support for generating specific architectures (e.g., `ktd create MyApp --template compose`, `--template mvvm`).
 - **Interactive UI Mode**: Add a full terminal wizard (using `rich.prompt`) to guide beginners through creating apps.
 - **Dependency Search (`ktd dep-search <name>`)**: Search Maven Central directly from the terminal to find the exact dependency string without opening a browser.
